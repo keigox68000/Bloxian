@@ -174,7 +174,7 @@
             enemyGroup.y = 60;
             enemyGroup.direction = 1;
             createEnemies();
-            resetPlayer();
+            // resetPlayer(); // ★★★ この行を削除して、ステージクリア時に自機が中央に戻らないようにする
             enemyBullets = [];
             attackTimer = 3.0;
         }
@@ -333,7 +333,6 @@
             for(let i = scorePopups.length - 1; i >= 0; i--) { const popup = scorePopups[i]; popup.y -= 20 * deltaTime; popup.life -= deltaTime; if (popup.life <= 0) scorePopups.splice(i, 1); }
             for (let i = particles.length - 1; i >= 0; i--) { const p = particles[i]; p.x += p.vx * deltaTime; p.y += p.vy * deltaTime; p.vy += p.gravity * deltaTime; p.life -= deltaTime; if (p.life <= 0) particles.splice(i, 1); }
             
-            // ★★★ 根本原因の修正 ★★★
             // 編隊の基準位置が画面外にでないように、常に移動を制限する
             enemyGroup.x += enemyGroup.speed * enemyGroup.direction * deltaTime;
             const greenCount = 10;
@@ -449,8 +448,6 @@
                         enemy.isReturning = false;
                     }
                 } else if (enemy.state === 'returning') {
-                    // 編隊の基準位置が画面内に保たれるようになったため、
-                    // この部分のロジックはシンプルに戻しても問題ありません。
                     if (!enemy.isReturning) {
                         enemy.currentX = enemyGroup.x + enemy.homeX;
                         enemy.currentY = -ENEMY_HEIGHT;
